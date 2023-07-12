@@ -3,13 +3,17 @@
 #include "animal.h"
 
 struct ListaE{
+
      PtrNodo primero;
+
 };
 
 
 struct NodoE {
+
     PtrDato dato; // dato almacenado
-    struct NodoE * sgte; // puntero al siguiente
+    struct NodoE * sgte; // puntero al siguiente nodo que es un Nodo de la misma estructura
+
 };
 
 ///Lista
@@ -55,11 +59,13 @@ PtrDato getDatoLista(PtrLista lista, int posicion){
 int longitudLista(PtrLista lista){
     // para obtener la longitud, debemos recorrer la lista.
     int longitud = 0;
-    PtrNodo nodo = lista->primero;
-    while(nodo != NULL){
-        nodo = nodo->sgte;
+    PtrNodo actual = lista->primero;
+
+    while(actual != NULL){
+        actual = actual->sgte;
         longitud++;
     }
+
     return longitud;
 }
 
@@ -129,14 +135,6 @@ void eliminarInicio(PtrLista lista) {
     }
 }
 
-void vaciarLista(PtrLista lista){
-
-    while(lista->primero != NULL){
-    eliminarInicio(lista);
-    }
-
-}
-
 void eliminarFinal(PtrLista lista){
 
     if(lista->primero != NULL){
@@ -163,6 +161,14 @@ void eliminarFinal(PtrLista lista){
     }
 }
 
+void vaciarLista(PtrLista lista){
+
+    while(lista->primero != NULL){
+    eliminarInicio(lista);
+    }
+
+}
+
 void duplicarLista(PtrLista listaOriginal, PtrLista listaDuplicada) {
     PtrNodo nodoOriginal = listaOriginal->primero;
 
@@ -182,9 +188,7 @@ void imprimirListaAnimal(PtrLista lista){
 
     printf("\n\n------ Lista con %d datos: ------\n",longitudLista(lista) );
 
-    int i=0;
-
-    for(i=0;i<longitudLista(lista);i++){
+    for(int i=0;i<longitudLista(lista);i++){
         mostrarAnimal( (Animal)  getDatoLista(lista,i) );
 
     }
@@ -195,9 +199,7 @@ void imprimirNumeros(PtrLista lista){
 
     printf("\n\n------ Lista con %d datos: ------\n",longitudLista(lista) );
 
-    int i=0;
-
-    for(i=0;i<longitudLista(lista);i++){
+    for(int i=0;i<longitudLista(lista);i++){
         printf(" %d  ", ( (int)  getDatoLista(lista,i) ));
 
     }

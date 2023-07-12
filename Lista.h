@@ -12,6 +12,7 @@ struct NodoE;
 typedef struct NodoE * PtrNodo;
 
 PtrLista crearLista();
+PtrNodo crearNodo(PtrDato dato);
 
 PtrDato getDatoLista(PtrLista lista, int posicion);
 int longitudLista(PtrLista lista);

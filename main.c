@@ -4,12 +4,12 @@
 #include "Lista.h"
 int main()
 {
+    PtrLista lista = crearLista();
     Animal animal1 = crearAnimal("Ave", "Caniche", "Samanta", 22.3, 2, 'm');
     Animal animal2 = crearAnimal("Perro", "Dogo", "Ishikame", 31.1, 5, 'm');
     Animal animal3 = crearAnimal("Gato", "Siames", "Robertina", 8.3, 3, 'f');
     Animal animalInicio = crearAnimal("GatoInicio", "Inicio", "KevinInicio", 8.3, 3, 'f');
     Animal animalFinal = crearAnimal("GatoFinal", "Final", "CrisFinal", 8.3, 3, 'f');
-    PtrLista lista = crearLista();
 
     insertarInicio(lista,animal1);
     insertarInicio(lista,animal2);
