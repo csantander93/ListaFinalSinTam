@@ -38,6 +38,7 @@ int main()
     insertarOrdenado(listaNum, 2);
     insertarOrdenado(listaNum, 10);
     insertarOrdenado(listaNum, 1);
+    eliminarNodoOrdenado(listaNum, 5);
 
     imprimirNumeros(listaNum);
     vaciarLista(lista);

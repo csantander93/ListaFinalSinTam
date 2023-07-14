@@ -5,15 +5,12 @@
 struct ListaE{
 
      PtrNodo primero;
-
 };
-
 
 struct NodoE {
 
     PtrDato dato; // dato almacenado
     struct NodoE * sgte; // puntero al siguiente nodo que es un Nodo de la misma estructura
-
 };
 
 ///Lista
@@ -23,7 +20,6 @@ PtrLista crearLista(){
     ///El constructor, lo de siempre :)
     PtrLista lista = malloc(sizeof(struct ListaE));
     lista->primero = NULL;
-
 
     return lista;
 }
@@ -46,7 +42,9 @@ PtrDato getDatoLista(PtrLista lista, int posicion){
     int posicionActual = 0;
 
     if (actual != NULL) {
+
         while (posicionActual < posicion && actual->sgte != NULL) {
+
             posicionActual++;
             actual = actual->sgte;
         }
@@ -62,8 +60,10 @@ int longitudLista(PtrLista lista){
     PtrNodo actual = lista->primero;
 
     while(actual != NULL){
+
         actual = actual->sgte;
         longitud++;
+
     }
 
     return longitud;
@@ -73,11 +73,11 @@ void insertarInicio(PtrLista lista, PtrDato dato) {
     // Creamos un nuevo nodo con el dato
     PtrNodo nuevoNodo = crearNodo(dato);
 
-    // Si la lista estÃ¡ vacÃ­a, el nuevo nodo serÃ¡ el primero
+    // Si la lista está vacía, el nuevo nodo será el primero
     if (lista->primero == NULL) {
         lista->primero = nuevoNodo;
     } else {
-        // Si la lista no estÃ¡ vacÃ­a, ajustamos los punteros
+        // Si la lista no está vacía, ajustamos los punteros
         nuevoNodo->sgte = lista->primero;
         lista->primero = nuevoNodo;
     }
@@ -87,16 +87,16 @@ void insertarFinal(PtrLista lista, PtrDato dato) {
     // Creamos un nuevo nodo con el dato
     PtrNodo nuevoNodo = crearNodo(dato);
 
-    // Si la lista estÃ¡ vacÃ­a, el nuevo nodo serÃ¡ el primero
+    // Si la lista está vacía, el nuevo nodo será el primero
     if (lista->primero == NULL) {
         lista->primero = nuevoNodo;
     } else {
-        // Si la lista no estÃ¡ vacÃ­a, recorremos hasta el Ãºltimo nodo
+        // Si la lista no está vacía, recorremos hasta el último nodo
         PtrNodo nodoActual = lista->primero;
         while (nodoActual->sgte != NULL) {
             nodoActual = nodoActual->sgte;
         }
-        // Asignamos el nuevo nodo al siguiente del Ãºltimo nodo
+        // Asignamos el nuevo nodo al siguiente del último nodo
         nodoActual->sgte = nuevoNodo;
     }
 }
@@ -104,7 +104,7 @@ void insertarFinal(PtrLista lista, PtrDato dato) {
 void insertarOrdenado(PtrLista lista, PtrDato dato) {
     PtrNodo nuevoNodo = crearNodo(dato);
 
-    // Si la lista estÃ¡ vacÃ­a o el dato es menor que el primer elemento
+    // Si la lista está vacía o el dato es menor que el primer elemento
     if (lista->primero == NULL || dato < lista->primero->dato) {
         nuevoNodo->sgte = lista->primero;
         lista->primero = nuevoNodo;
@@ -112,13 +112,13 @@ void insertarOrdenado(PtrLista lista, PtrDato dato) {
         PtrNodo nodoActual = lista->primero;
         PtrNodo nodoAnterior = NULL;
 
-        // Recorremos la lista hasta encontrar la posiciÃ³n adecuada para el nuevo nodo
+        // Recorremos la lista hasta encontrar la posición adecuada para el nuevo nodo
         while (nodoActual != NULL && dato >= nodoActual->dato) {
             nodoAnterior = nodoActual;
             nodoActual = nodoActual->sgte;
         }
 
-        // Insertamos el nuevo nodo en la posiciÃ³n adecuada
+        // Insertamos el nuevo nodo en la posición adecuada
         nuevoNodo->sgte = nodoActual;
         nodoAnterior->sgte = nuevoNodo;
     }
@@ -141,7 +141,7 @@ void eliminarFinal(PtrLista lista){
         PtrNodo nodoActual = lista->primero;
         PtrNodo nodoAnterior = NULL;
 
-        // Recorremos hasta el Ãºltimo nodo
+        // Recorremos hasta el último nodo
         while(nodoActual->sgte != NULL){
             nodoAnterior = nodoActual;
             nodoActual = nodoActual->sgte;
@@ -151,7 +151,7 @@ void eliminarFinal(PtrLista lista){
         if(nodoAnterior != NULL){
             nodoAnterior->sgte = NULL;
         }
-        // Si no hay un nodo anterior, el Ãºltimo nodo es el primero de la lista
+        // Si no hay un nodo anterior, el último nodo es el primero de la lista
         else{
             lista->primero = NULL;
         }
@@ -160,6 +160,29 @@ void eliminarFinal(PtrLista lista){
         free(nodoActual);
     }
 }
+
+void eliminarNodoOrdenado(PtrLista lista, PtrDato dato) {
+    PtrNodo nodoActual = lista->primero;
+    PtrNodo nodoAnterior = NULL;
+
+    while (nodoActual != NULL && nodoActual->dato != dato) {
+        nodoAnterior = nodoActual;
+        nodoActual = nodoActual->sgte;
+    }
+
+    if (nodoActual != NULL) {
+        // Si el nodo a eliminar es el primero de la lista
+        if (nodoAnterior == NULL) {
+            lista->primero = nodoActual->sgte;
+        } else {
+            // Si el nodo a eliminar está en medio o al final de la lista
+            nodoAnterior->sgte = nodoActual->sgte;
+        }
+
+        free(nodoActual);
+    }
+}
+
 
 void vaciarLista(PtrLista lista){
 
@@ -233,15 +256,12 @@ for(int i=0; i<longitudLista(lista); i++){
     actual = lista->primero;
 
     for(int j=0; j<longitudLista(lista)-1;j++){
-
         if(actual->dato > actual->sgte->dato ){
 
                 aux = actual->dato;
                 actual->dato = actual->sgte->dato;
                 actual->sgte->dato = aux;
-
-        }
-
+            }
         actual = actual->sgte;
         }
     }
@@ -256,14 +276,12 @@ void ordenamientoPorEdad(PtrLista lista) {
         actual = lista->primero;
 
         for (int j = 0; j < longitudLista(lista) - 1; j++) {
-
             if (getEdad((Animal)actual->dato) > getEdad((Animal)actual->sgte->dato)) {
                 aux = actual->dato;
                 actual->dato = actual->sgte->dato;
                 actual->sgte->dato = aux;
             }
-
-            actual = actual->sgte;
+        actual = actual->sgte;
         }
     }
 }
