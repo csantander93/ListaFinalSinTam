@@ -56,17 +56,17 @@ PtrDato getDatoLista(PtrLista lista, int posicion){
 
 int longitudLista(PtrLista lista){
     // para obtener la longitud, debemos recorrer la lista.
-    int longitud = 0;
+    int tam = 0;
     PtrNodo actual = lista->primero;
 
     while(actual != NULL){
 
         actual = actual->sgte;
-        longitud++;
+        tam++;
 
     }
 
-    return longitud;
+    return tam;
 }
 
 void insertarInicio(PtrLista lista, PtrDato dato) {
@@ -92,12 +92,12 @@ void insertarFinal(PtrLista lista, PtrDato dato) {
         lista->primero = nuevoNodo;
     } else {
         // Si la lista no está vacía, recorremos hasta el último nodo
-        PtrNodo nodoActual = lista->primero;
-        while (nodoActual->sgte != NULL) {
-            nodoActual = nodoActual->sgte;
+        PtrNodo actual = lista->primero;
+        while (actual->sgte != NULL) {
+            actual = actual->sgte;
         }
         // Asignamos el nuevo nodo al siguiente del último nodo
-        nodoActual->sgte = nuevoNodo;
+        actual->sgte = nuevoNodo;
     }
 }
 
@@ -109,18 +109,18 @@ void insertarOrdenado(PtrLista lista, PtrDato dato) {
         nuevoNodo->sgte = lista->primero;
         lista->primero = nuevoNodo;
     } else {
-        PtrNodo nodoActual = lista->primero;
-        PtrNodo nodoAnterior = NULL;
+        PtrNodo actual = lista->primero;
+        PtrNodo anterior = NULL;
 
         // Recorremos la lista hasta encontrar la posición adecuada para el nuevo nodo
-        while (nodoActual != NULL && dato >= nodoActual->dato) {
-            nodoAnterior = nodoActual;
-            nodoActual = nodoActual->sgte;
+        while (actual != NULL && dato >= actual->dato) {
+            anterior = actual;
+            actual = actual->sgte;
         }
 
         // Insertamos el nuevo nodo en la posición adecuada
-        nuevoNodo->sgte = nodoActual;
-        nodoAnterior->sgte = nuevoNodo;
+        nuevoNodo->sgte = actual;
+        anterior->sgte = nuevoNodo;
     }
 }
 
@@ -138,48 +138,47 @@ void eliminarInicio(PtrLista lista) {
 void eliminarFinal(PtrLista lista){
 
     if(lista->primero != NULL){
-        PtrNodo nodoActual = lista->primero;
-        PtrNodo nodoAnterior = NULL;
+        PtrNodo actual = lista->primero;
+        PtrNodo anterior = NULL;
 
         // Recorremos hasta el último nodo
-        while(nodoActual->sgte != NULL){
-            nodoAnterior = nodoActual;
-            nodoActual = nodoActual->sgte;
+        while(actual->sgte != NULL){
+            anterior = actual;
+            actual = actual->sgte;
         }
 
         // Si hay un nodo anterior, ajustamos su puntero al siguiente
-        if(nodoAnterior != NULL){
-            nodoAnterior->sgte = NULL;
+        if(anterior != NULL){
+            anterior->sgte = NULL;
         }
         // Si no hay un nodo anterior, el último nodo es el primero de la lista
         else{
             lista->primero = NULL;
         }
-
         // Liberamos la memoria del nodo a eliminar
-        free(nodoActual);
+        free(actual);
     }
 }
 
 void eliminarNodoOrdenado(PtrLista lista, PtrDato dato) {
-    PtrNodo nodoActual = lista->primero;
-    PtrNodo nodoAnterior = NULL;
+    PtrNodo actual = lista->primero;
+    PtrNodo anterior = NULL;
 
-    while (nodoActual != NULL && nodoActual->dato != dato) {
-        nodoAnterior = nodoActual;
-        nodoActual = nodoActual->sgte;
+    while (actual != NULL && actual->dato != dato) {
+        anterior = actual;
+        actual = actual->sgte;
     }
 
-    if (nodoActual != NULL) {
+    if (actual != NULL) {
         // Si el nodo a eliminar es el primero de la lista
-        if (nodoAnterior == NULL) {
-            lista->primero = nodoActual->sgte;
+        if (anterior == NULL) {
+            lista->primero = actual->sgte;
         } else {
             // Si el nodo a eliminar está en medio o al final de la lista
-            nodoAnterior->sgte = nodoActual->sgte;
+            anterior->sgte = actual->sgte;
         }
 
-        free(nodoActual);
+        free(actual);
     }
 }
 
@@ -196,14 +195,11 @@ void duplicarLista(PtrLista listaOriginal, PtrLista listaDuplicada) {
     PtrNodo nodoOriginal = listaOriginal->primero;
 
     while (nodoOriginal != NULL) {
-        PtrDato datoOriginal = nodoOriginal->dato;
-        PtrDato datoDuplicado = datoOriginal;  // Suponemos que el tipo de dato es un puntero
 
-        insertarFinal(listaDuplicada, datoDuplicado);
-
-        nodoOriginal = nodoOriginal->sgte;
+        insertarFinal(listaDuplicada, nodoOriginal->dato); // le pasamos por parametro el puntero del nodo de la lista original
+        nodoOriginal = nodoOriginal->sgte; //luego nos movemos hacia adelante
     }
-    ordenamiento(listaDuplicada);
+    ordenamiento(listaDuplicada); //llamamos al ordenamiento de la listaDuplicada
 }
 
 
