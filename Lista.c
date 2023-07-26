@@ -7,6 +7,8 @@ struct ListaE{
      PtrNodo primero;
 };
 
+//typedef void * PtrDato;
+
 struct NodoE {
 
     PtrDato dato; // dato almacenado
@@ -28,7 +30,7 @@ PtrLista crearLista(){
 
 PtrNodo crearNodo(PtrDato dato){
 
-    PtrNodo nodo=(PtrNodo)malloc(sizeof(struct NodoE));
+    PtrNodo nodo = malloc(sizeof(struct NodoE));
     nodo->dato = dato;
     nodo->sgte = NULL;
 
@@ -53,6 +55,23 @@ PtrDato getDatoLista(PtrLista lista, int posicion){
     return actual->dato;
 }
 
+PtrDato obtenerPrimerDato(PtrLista lista){
+
+return lista->primero->dato;
+
+}
+
+PtrDato obtenerUltimoDato(PtrLista lista){
+
+PtrNodo actual = lista->primero;
+
+while(actual->sgte != NULL){
+    actual = actual->sgte;
+}
+
+return actual->dato;
+}
+
 
 int longitudLista(PtrLista lista){
     // para obtener la longitud, debemos recorrer la lista.
@@ -70,17 +89,12 @@ int longitudLista(PtrLista lista){
 }
 
 void insertarInicio(PtrLista lista, PtrDato dato) {
-    // Creamos un nuevo nodo con el dato
-    PtrNodo nuevoNodo = crearNodo(dato);
-
-    // Si la lista está vacía, el nuevo nodo será el primero
-    if (lista->primero == NULL) {
-        lista->primero = nuevoNodo;
-    } else {
-        // Si la lista no está vacía, ajustamos los punteros
+    //creo el nuevo nodo
+        PtrNodo nuevoNodo = crearNodo(dato);
+    //el nuevo nodo apunta el siguiente a null y hacemos que ese null sea ahora el nodo primero
         nuevoNodo->sgte = lista->primero;
+    //el primero de la lista pasa a ser el nuevo nodo.
         lista->primero = nuevoNodo;
-    }
 }
 
 void insertarFinal(PtrLista lista, PtrDato dato) {
@@ -102,6 +116,7 @@ void insertarFinal(PtrLista lista, PtrDato dato) {
 }
 
 void insertarOrdenado(PtrLista lista, PtrDato dato) {
+
     PtrNodo nuevoNodo = crearNodo(dato);
 
     // Si la lista está vacía o el dato es menor que el primer elemento
@@ -161,24 +176,30 @@ void eliminarFinal(PtrLista lista){
 }
 
 void eliminarNodoOrdenado(PtrLista lista, PtrDato dato) {
+
+    //si la lista no esta vacia hacer....
+    if(lista->primero != NULL){
+
     PtrNodo actual = lista->primero;
     PtrNodo anterior = NULL;
 
     while (actual != NULL && actual->dato != dato) {
+        //guardo en el anterior antes de moverme
         anterior = actual;
+        //me muevo al siguiente nodo
         actual = actual->sgte;
     }
 
-    if (actual != NULL) {
-        // Si el nodo a eliminar es el primero de la lista
-        if (anterior == NULL) {
-            lista->primero = actual->sgte;
-        } else {
+    if(actual != NULL){
             // Si el nodo a eliminar está en medio o al final de la lista
+        if (anterior != NULL) {
             anterior->sgte = actual->sgte;
+        } else {
+            // Si el nodo a eliminar es el primero de la lista
+            lista->primero = actual->sgte;
         }
-
         free(actual);
+        }
     }
 }
 
@@ -196,10 +217,10 @@ void duplicarLista(PtrLista listaOriginal, PtrLista listaDuplicada) {
 
     while (nodoOriginal != NULL) {
 
-        insertarFinal(listaDuplicada, nodoOriginal->dato); // le pasamos por parametro el puntero del nodo de la lista original
+        insertarOrdenado(listaDuplicada, nodoOriginal->dato); // le pasamos por parametro el puntero del nodo de la lista original
         nodoOriginal = nodoOriginal->sgte; //luego nos movemos hacia adelante
+
     }
-    ordenamiento(listaDuplicada); //llamamos al ordenamiento de la listaDuplicada
 }
 
 
@@ -218,16 +239,18 @@ void imprimirNumeros(PtrLista lista){
 
     printf("\n\n------ Lista con %d datos: ------\n",longitudLista(lista) );
 
-    for(int i=0;i<longitudLista(lista);i++){
-        printf(" %d  ", ( (int)  getDatoLista(lista,i) ));
+    PtrNodo actual = lista->primero;
 
+    while(actual->sgte != NULL){
+        printf(" %d ", (int) actual->dato);
+        actual = actual->sgte;
     }
 
 }
 
 int busquedaSecuencial(PtrLista lista, int dato){
 
-    int pos=-1;
+    int pos = -1;
     int i=0;
 
         while(i<longitudLista(lista) && pos == -1){
@@ -240,6 +263,23 @@ int busquedaSecuencial(PtrLista lista, int dato){
 return pos;
 
 };
+
+int busquedaSecuencialDos(PtrLista lista, PtrDato dato){
+
+    int pos = -1;
+    int i=0;
+    PtrNodo actual = lista->primero;
+
+    while(actual != NULL){
+
+        if(dato == actual->dato){
+            pos = i;
+        }
+        i++;
+        actual = actual->sgte;
+    }
+    return pos;
+}
 
 
 void ordenamiento(PtrLista lista){

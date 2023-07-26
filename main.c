@@ -38,7 +38,11 @@ int main()
     insertarOrdenado(listaNum, 2);
     insertarOrdenado(listaNum, 10);
     insertarOrdenado(listaNum, 1);
+    imprimirNumeros(listaNum);
     eliminarNodoOrdenado(listaNum, 5);
+    eliminarNodoOrdenado(listaNum, 10);
+    eliminarNodoOrdenado(listaNum, 7);
+    eliminarNodoOrdenado(listaNum, 22);
 
     imprimirNumeros(listaNum);
     vaciarLista(lista);
@@ -48,6 +52,8 @@ int main()
     duplicarLista(listaNum, listaNueva);
     printf("buscando el 10 esta en la posicion ---> %d ", busquedaSecuencial(listaNueva, 10));
     imprimirNumeros(listaNueva);
+
+    printf("\nBusqueda secuencial nueva %d", busquedaSecuencialDos(listaNueva, 10));
 
     return 0;
 }
